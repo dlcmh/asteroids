@@ -2,6 +2,7 @@ use macroquad::prelude::*;
 
 const SHIP_HEIGHT: f32 = 25.;
 const SHIP_BASE: f32 = 22.;
+const SHIP_ROTATION_SPEED: f32 = 300.; // 300 degrees/second = 50 RPM
 
 #[derive(Debug)]
 struct Ship {
@@ -20,13 +21,18 @@ async fn main() {
     loop {
         clear_background(LIGHTGRAY);
 
+        // times
+        let elapsed_t_since_last_frame: f32 = get_frame_time();
+
+        // The ship
         let rotation = ship.rot.to_radians();
 
         // Steer ship
+        let delta_rot = SHIP_ROTATION_SPEED * elapsed_t_since_last_frame;
         if is_key_down(KeyCode::Right) {
-            ship.rot += 5.;
+            ship.rot += delta_rot;
         } else if is_key_down(KeyCode::Left) {
-            ship.rot -= 5.;
+            ship.rot -= delta_rot;
         }
 
         // Draw ship
